@@ -49,7 +49,7 @@ module.exports = function(isUpload, getSyncHelper) {
 	});
 	
 	var prepareSync = function(options) {
-		var syncMessage = vscode.window.setStatusBarMessage("Ftp-sync: sync prepare in progress...");
+		let syncMessage = vscode.window.setStatusBarMessage("Ftp-sync: sync prepare in progress...");
 		getSyncHelper().prepareSync(options, function(err, sync) {
 			syncMessage.dispose();
 			if(prepareProgressMessage) prepareProgressMessage.dispose();
@@ -57,7 +57,7 @@ module.exports = function(isUpload, getSyncHelper) {
 			else {
 				var pickOptions = [{
 						label: "Run",
-						description: "Run all " + getSyncHelper().totalOperations(sync) + " operations now",
+						description: "Run all: " + getSyncHelper().getSyncDetails(sync),
 						operation: "run"
 					}, {
 						label: "Review",
@@ -65,7 +65,8 @@ module.exports = function(isUpload, getSyncHelper) {
 						operation: "review"
 					}, {
 						label: "Cancel",
-						description: "I've changed my mind, cancel sync"
+						description: "I've changed my mind, cancel sync",
+						operation: "cancel"
 					}];
 
 				var pickResult = vscode.window.showQuickPick(pickOptions, {
@@ -77,6 +78,10 @@ module.exports = function(isUpload, getSyncHelper) {
 						helper.executeSync(getSyncHelper(), sync, options)
 					else if(result && result.operation == "review")
 						showSyncSummary(sync, options);
+					else if(result.operation !== 'cancel') {
+						// If it's not a cancel operation, let the end user know something (well, nothing) happened.
+						vscode.window.showErrorMessage("Ftp-sync: unknown operation: " + result.label + " (" + result.operation +")");
+					}
 				})
 				
 			}

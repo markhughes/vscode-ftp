@@ -684,6 +684,32 @@ var helper = {
   deleteRemoteFile: deleteRemoteFile,
   executeSync: executeSync,
   totalOperations: totalOperations,
+  getSyncDetails(sync) {
+
+    let details = [];
+
+    if(sync.filesToUpdate.length > 0){
+      details.push('Updated files: ' + sync.filesToUpdate.length);
+    }
+
+    if(sync.filesToAdd.length > 0 ){
+      details.push('New files: ' + sync.filesToAdd.length);
+    }
+
+    if(sync.dirsToAdd.length > 0 ){
+      details.push('New folders: ' + sync.filesToAdd.length);
+    }
+
+    if(sync.filesToRemove.length > 0){
+      details.push('Deleted files: '+ sync.filesToRemove.length);
+    }
+
+    if(sync.dirsToRemove.length > 0){
+      details.push('Deleted folders: '+ sync.dirsToRemove.length);
+    }
+
+    return details.join(', ') + '.'; 
+  },
   uploadFile: uploadFile,
   downloadFile: downloadFile,
   disconnect: function() {

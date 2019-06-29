@@ -2,6 +2,7 @@
 ## Changelog
 
 - 0.5.0
+  - [ Improve Message Output ]()
   - [ Unicode Characters Fix ]()
 - 0.4.0
   - [ Config fix ]()
