@@ -29,10 +29,17 @@ module.exports = function() {
         ftp.once('close', callback);
     }
     
-    self.list = function(path, callback) {
-        ftp.list(path, callback);
+    self.list = function(remotePath, callback) {
+        ftp.list(remotePath, function(err, remoteFiles) {
+            for(var remoteFile of remoteFiles) {
+                remoteFile.name = decodeURIComponent(escape(remoteFile.name))
+            }
+            if(callback) {
+                callback(err, remoteFiles)
+            }
+        });
     }
-    
+
     self.get = function(remotePath, localPath, callback) {
         ftp.get(remotePath, function(err, stream) {
             if(err)
