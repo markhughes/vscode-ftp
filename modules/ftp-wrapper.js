@@ -42,9 +42,11 @@ module.exports = function() {
 
     self.get = function(remotePath, localPath, callback) {
         ftp.get(remotePath, function(err, stream) {
-            if(err)
-               callback(err);
-            else {
+            if(err) {
+                err.remotePath = remotePath;
+                err.localPath = localPath;
+                callback(err);
+            } else {
                 var writeStream = fs.createWriteStream(localPath);
                 stream.pipe(writeStream);
                 writeStream.on('finish', function() {

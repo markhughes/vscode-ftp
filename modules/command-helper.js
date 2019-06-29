@@ -13,7 +13,9 @@ module.exports = {
 		
 		syncHelper.executeSync(sync, options, function(err) {
 			if(syncInfoMessage) syncInfoMessage.dispose();
-			if(err)
+			if (err && (err.remotePath || err.localPath)) {
+				vscode.window.showErrorMessage("Ftp-sync: could not sync " + err.remotePath + " <> " + err.localPath + ": " +  err);
+			} else if(err)
 				vscode.window.showErrorMessage("Ftp-sync: sync error: " + err);
 			else
 				vscode.window.setStatusBarMessage("Ftp-sync: sync-complete!", STATUS_TIMEOUT);
