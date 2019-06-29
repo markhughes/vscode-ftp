@@ -1,6 +1,8 @@
 
 ## Changelog
 
+- 0.5.0
+  - [ Unicode Characters Fix ]()
 - 0.4.0
   - [ Config fix ]()
 - 0.3.9
